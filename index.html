@@ -1,0 +1,1410 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+  <title>WatchLog</title>
+  <link rel="icon" href="icon.png">
+  <!--begin::Primary Meta Tags-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="title" content="STT" />
+  <meta name="author" content="ColorlibHQ" />
+  <meta name="description" content="Log Analyzer tool." />
+
+  <link rel="stylesheet"
+    href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
+  <link rel="stylesheet" href="css/all.min.css">
+  <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
+  <link rel="stylesheet"
+    href="css/tempusdominus-bootstrap-4.min.css">
+  <link rel="stylesheet" href="css/icheck-bootstrap.min.css">
+  <link rel="stylesheet" href="cs/summernote-bs4.min.css">
+  <link rel="stylesheet" href="https://adminlte.io/themes/v3/dist/css/adminlte.min.css?v=3.2.0">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fontsource/source-sans-3@5.0.12/index.css"
+    integrity="sha256-tXJfXfp6Ewt1ilPzLDtQnJV4hclT9XuaZUKyUvmyr+Q=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/overlayscrollbars@2.10.1/styles/overlayscrollbars.min.css"
+    integrity="sha256-tZHrRjVqNSRyWg2wbppGnT833E/Ys0DHWGwT04GiqQg=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css"
+    integrity="sha256-9kPW/n5nn53j4WMRYAxe9c1rCY96Oogo/MKSVdKzPmI=" crossorigin="anonymous" />
+  <link rel="stylesheet" href="css/adminlte.css" />
+  <link rel="stylesheet" href="css/bootstrap-4.min.css">
+  <link rel="stylesheet" href="css/select2.min.css">
+  <link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/datatables-bs4/css/dataTables.bootstrap4.min.css">
+  <link rel="stylesheet"
+    href="https://adminlte.io/themes/v3/plugins/datatables-responsive/css/responsive.bootstrap4.min.css">
+  <link rel="stylesheet" href="https://adminlte.io/themes/v3/plugins/datatables-buttons/css/buttons.bootstrap4.min.css">
+  <style>
+    .main-footer {
+      margin-left: 0rem !important;
+    }
+  </style>
+
+</head>
+
+<body class="layout-fixed bg-body-tertiary">
+  <div class="app-wrapper">
+    <main class="app-main">
+      <div class="app-content-header">
+        <div class="container-fluid">
+          <div class="row content-header">
+            <div class="col-sm-1">
+              <img src="icon.png" alt="Log Analyzer"height="35">
+            </div>
+            <div class="col-sm-2" style="position: absolute; margin-left: 3.5%;">
+              <h3 class="mb-0"><b>WatchLog Tool</b></h3>
+            </div>
+          </div>
+
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Input OS log file in excel format</h3>
+              <button class="btn btn-info btn-sm float-right" id="clear">Clear</button>
+            </div>
+            <div class="card-body">
+              <form id="form1">
+                <div class="row">
+                  <div class="form-group col-lg-6">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="customFile_os_des">
+                      <label class="custom-file-label" for="customFile_os_des"><b>Import configuration file in JSON</b></label>
+                      <p id="json" style="color:green"></p>
+                    </div>
+                  </div>
+                  <div class="form-group col-lg-6">
+                    <div class="custom-file">
+                      <input type="file" class="custom-file-input" id="customFile" disabled>
+                      <label class="custom-file-label" for="customFile"><b>Import OS Log</b></label>
+                      <p id="log" style="color:green"></p>
+                    </div>
+                  </div>
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+
+        <div class="text-center" id="preload" style="display: none;">
+          <div class="spinner-border" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+          <div class="spinner-grow" style="width: 3rem; height: 3rem;" role="status">
+            <span class="sr-only">Loading...</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-variant">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-info">
+              <h4 class="modal-title">Vehicle variant</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>IPM Message</th>
+                      <th>OP status</th>
+                      <th>ID</th>
+                      <th>Length</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-variant">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-eqswitch">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-success">
+              <h4 class="modal-title">Audio EQ switch details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>IPM Message</th>
+                      <th>OP status</th>
+                      <th>ID</th>
+                      <th>Length</th>
+                      <th>Data</th>
+                      <th>EQ Name</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-eqswitch">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-spkrfail">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-warning">
+              <h4 class="modal-title">Speaker failure details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>IPM Message</th>
+                      <th>OP status</th>
+                      <th>ID</th>
+                      <th>Length</th>
+                      <th>Data</th>
+                      <th>Failed Speakers</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-spkrfailure">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-err">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-danger">
+              <h4 class="modal-title">Error details</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>From</th>
+                      <th>To</th>
+                      <th>IPM Message</th>
+                      <th>OP status</th>
+                      <th>ID</th>
+                      <th>Length</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-error">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-volmute">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Volume & Mute</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-volmute">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-balfade">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Balance & Fade</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-balfade">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-bmt">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">BMT</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-bmt">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-loudness">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Loudness</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-loudness">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-sz">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Sound Zone</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-sz">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-att">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Attenuation</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-att">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal fade" id="modal-xl-sdvc">
+        <div class="modal-dialog modal-xl">
+          <div class="modal-content">
+            <div class="modal-header bg-secondary">
+              <h4 class="modal-title">Speed dependent filter volume</h4>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+              <div class="card-body table-responsive p-0" style="height: 500px;">
+                <table class="table table-head-fixed text-nowrap dataTable">
+                  <thead>
+                    <tr>
+                      <th>Timestamp</th>
+                      <th>SinkID</th>
+                      <th>Data</th>
+                    </tr>
+                  </thead>
+                  <tbody class="tbody-sdvc">
+
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="app-content" id="app-content" style="display:none"> <!--TODO-->
+        <div class="container-fluid">
+          <div class="row">
+            <div class="col-lg-3">
+              <div class="small-box bg-info">
+                <div class="inner">
+                  <h3 id="variant_cnt">NA</h3>
+                  <p><b>Variant</b></p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" data-toggle="modal" data-target="#modal-xl-variant" class="small-box-footer">More info <i
+                    class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="small-box bg-success">
+                <div class="inner">
+                  <h3 id="eqswitch_cnt">0</h3>
+                  <p><b>Audio EQ Switching</b></p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-stats-bars"></i>
+                </div>
+                <a href="#" data-toggle="modal" data-target="#modal-xl-eqswitch" class="small-box-footer">More info <i
+                    class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="small-box bg-warning">
+                <div class="inner">
+                  <h3 id="spkrfail_cnt">0</h3>
+                  <p><b>Speaker Failure</b></p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-android-archive"></i>
+                </div>
+                <a href="#" data-toggle="modal" data-target="#modal-xl-spkrfail" class="small-box-footer">More info <i
+                    class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-3">
+              <div class="small-box bg-danger" id="err_disp">
+                <div class="inner">
+                  <h3 id="err_cnt">0</h3>
+                  <p><b>Errors</b></p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-pie-graph"></i>
+                </div>
+                <a href="#" data-toggle="modal" data-target="#modal-xl-err" class="small-box-footer">More info <i
+                    class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-12">
+              <div class="card collapsed-card">
+                <div class="card-header">
+                  <h3 class="card-title"><b>Logger window &nbsp;&nbsp;&nbsp;</b></h3>
+                  <p class="input-group" id="srchcnt" style="display: none; color: red;"></p>
+                  <div>
+                    <div class="input-group input-group-sm" style="width: 150px;">
+                      <input type="text" name="table_search" class="form-control float-right" placeholder="Search"
+                        id="search">
+                      <div class="input-group-append">
+                        <button type="submit" class="btn btn-outline-warning" id="searchBtn">
+                          <i class="fas fa-search"></i>
+                        </button>
+                        <button type="button" class="btn btn-outline-success" data-card-widget="collapse"><i
+                            class="fas fa-plus"></i>
+                        </button>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="card-header">
+                  <div class="select2-blue row">
+                    <h4 class="card-title">Filters</h4>
+                    <select class="select2 form-group" multiple="multiple"
+                      data-placeholder="Select IPM Messages to filter" data-dropdown-css-class="select2-blue"
+                      id="filter">
+                      <option value="AudioEnable">AudioEnable</option>
+                      <option value="AudioSettingsDbGet">AudioSettingsDbGet</option>
+                      <option value="AudioSettingsDbSet">AudioSettingsDbSet</option>
+                      <option value="AudioSettingsGet">AudioSettingsGet</option>
+                      <option value="AudioSettingsSet">AudioSettingsSet</option>
+                      <option value="ChimeSignalgen">ChimeSignalgen</option>
+                      <option value="ChimeStrmplyctrl">ChimeStrmplyctrl</option>
+                      <option value="CtrlDeactivation">CtrlDeactivation</option>
+                      <option value="DebugLog">DebugLog</option>
+                      <option value="DiagAcceleromtrstatus">DiagAcceleromtrstatus</option>
+                      <option value="DiagChannelstatus">DiagChannelstatus</option>
+                      <option value="DiagClockstatus">DiagClockstatus</option>
+                      <option value="DiagMicstatus">DiagMicstatus</option>
+                      <option value="DspErrorReport">DspErrorReport</option>
+                      <option value="DspFlashRead">DspFlashRead</option>
+                      <option value="DspStatus">DspStatus</option>
+                      <option value="FeatureEnable">FeatureEnable</option>
+                      <option value="GainReduction">GainReduction</option>
+                      <option value="GatixtpTransport">GatixtpTransport</option>
+                      <option value="Illegal">Illegal</option>
+                      <option value="PowerMode">PowerMode</option>
+                      <option value="RetrieveDspCoreload">RetrieveDspCoreload</option>
+                      <option value="RetrieveDspRpm">RetrieveDspRpm</option>
+                      <option value="RetrieveDspTemp">RetrieveDspTemp</option>
+                      <option value="SpeakerConfigId">SpeakerConfigId</option>
+                      <option value="UserdefFromDsp1">UserdefFromDsp1</option>
+                      <option value="UserdefFromDsp2">UserdefFromDsp2</option>
+                      <option value="UserdefFromDsp3">UserdefFromDsp3</option>
+                      <option value="UserdefFromDsp4">UserdefFromDsp4</option>
+                      <option value="UserdefFromDsp5">UserdefFromDsp5</option>
+                      <option value="UserdefFromMcu1">UserdefFromMcu1</option>
+                      <option value="UserdefFromMcu2">UserdefFromMcu2</option>
+                      <option value="UserdefFromMcu3">UserdefFromMcu3</option>
+                      <option value="UserdefFromMcu4">UserdefFromMcu4</option>
+                      <option value="UserdefFromMcu5">UserdefFromMcu5</option>
+                      <option value="WatchDog">WatchDog</option>
+                    </select>
+                  </div>
+                  <!--/div-->
+                </div>
+                <div class="card-body table-responsive p-0" style="height: 500px;">
+                  <table class="table table-head-fixed text-nowrap">
+                    <thead>
+                      <tr>
+                        <th>Timestamp</th>
+                        <th>From</th>
+                        <th>To</th>
+                        <th>IPM Message</th>
+                        <th>OP status</th>
+                        <th>ID</th>
+                        <!--th>Length</th-->
+                        <th>Data</th>
+                      </tr>
+                    </thead>
+                    <tbody class="tbody">
+
+                    </tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">Audio settings results</h3>
+            </div>
+            <div class="card-body">
+              <div>
+                <!-- Widget: user widget style 2 -->
+                <div class="card card-widget widget-user-2">
+                  <!-- Add the bg color to the header using any of the bg-* classes -->
+                  <div class="widget-user-header bg-warning">
+                    <!-- /.widget-user-image -->
+                    <h3>IPM 201 Analysis</h3>
+                  </div>
+                  <div class="card-footer p-0">
+                    <ul class="nav flex-column">
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-volmute" class="nav-link">
+                          Volume & Mute <span class="float-right badge bg-secondary" id="volmute_count">31</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-balfade"  class="nav-link">
+                          Balance & Fade <span class="float-right badge bg-secondary" id="balfade_count">5</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-bmt"  class="nav-link">
+                          BMT <span class="float-right badge bg-secondary" id="bmt_count">12</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-loudness"  class="nav-link">
+                          Loudness <span class="float-right badge bg-secondary" id="loudness_count">842</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-sz"  class="nav-link">
+                          Sound zone <span class="float-right badge bg-secondary" id="sz_count">842</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-att"  class="nav-link">
+                          Attenuation <span class="float-right badge bg-secondary" id="att_count">842</span>
+                        </a>
+                      </li>
+                      <li class="nav-item">
+                        <a href="#" data-toggle="modal" data-target="#modal-xl-sdvc"  class="nav-link">
+                          Speed dependent filter volume <span class="float-right badge bg-secondary" id="sdvc_count">842</span>
+                        </a>
+                      </li>
+                    </ul>
+                  </div>
+                </div>
+                <!-- /.widget-user -->
+              </div>
+            </div>
+          </div>
+
+          <div class="card card-secondary">
+            <div class="card-header">
+              <h3 class="card-title">ESS Log Analysis Results</h3>
+            </div>
+            <div class="card-body row">
+              <div class="col-12">
+                <div class="card card-primary card-tabs">
+                  <div class="card-header p-0 pt-1">
+                    <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                      <li class="nav-item">
+                        <a class="nav-link active" id="custom-tabs-rpm-tab" data-toggle="pill" href="#custom-tabs-rpm"
+                          role="tab" aria-controls="custom-tabs-rpm" aria-selected="true">RPM</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-torque-tab" data-toggle="pill" href="#custom-tabs-torque"
+                          role="tab" aria-controls="custom-tabs-torque" aria-selected="false">Torque</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-speed-tab" data-toggle="pill" href="#custom-tabs-speed"
+                          role="tab" aria-controls="custom-tabs-speed" aria-selected="false">Speed</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-pedal-tab" data-toggle="pill" href="#custom-tabs-pedal"
+                          role="tab" aria-controls="custom-tabs-pedal" aria-selected="false">Pedal</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-acc-tab" data-toggle="pill" href="#custom-tabs-acc"
+                          role="tab" aria-controls="custom-tabs-acc" aria-selected="false">Acceleration</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-ess-basic-tab" data-toggle="pill"
+                          href="#custom-tabs-ess-basic" role="tab" aria-controls="custom-tabs-ess-basic"
+                          aria-selected="false">ESS Status</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-theme-tab" data-toggle="pill" href="#custom-tabs-theme"
+                          role="tab" aria-controls="custom-tabs-theme" aria-selected="false">Theme</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-boost-tab" data-toggle="pill" href="#custom-tabs-boost"
+                          role="tab" aria-controls="custom-tabs-boost" aria-selected="false">Boost Activation</a>
+                      </li>
+                      <li class="nav-item">
+                        <a class="nav-link" id="custom-tabs-lc-tab" data-toggle="pill" href="#custom-tabs-lc" role="tab"
+                          aria-controls="custom-tabs-lc" aria-selected="false">Launch Control</a>
+                      </li>
+                    </ul>
+                  </div>
+                  <div class="card-body">
+                    <div class="tab-content" id="custom-tabs-one-tabContent">
+                      <div class="tab-pane fade active show" id="custom-tabs-rpm" role="tabpanel"
+                        aria-labelledby="custom-tabs-rpm-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-front-rpmgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-front-rpmgraph" role="tab"
+                                  aria-controls="custom-tabs-front-rpmgraph" aria-selected="true">Front RPM Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-front-rpmdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-front-rpmdata" role="tab" aria-controls="custom-tabs-front-rpmdata"
+                                  aria-selected="false">Front RPM Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rl-rpmgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-rl-rpmgraph" role="tab" aria-controls="custom-tabs-rl-rpmgraph"
+                                  aria-selected="false">Rear Left RPM Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rl-rpmdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-rl-rpmdata" role="tab" aria-controls="custom-tabs-rl-rpmdata"
+                                  aria-selected="false">Rear Left RPM Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rr-rpmgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-rr-rpmgraph" role="tab" aria-controls="custom-tabs-rr-rpmgraph"
+                                  aria-selected="false">Rear Right RPM Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rr-rpmdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-rr-rpmdata" role="tab" aria-controls="custom-tabs-rr-rpmdata"
+                                  aria-selected="false">Rear Right RPM Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-front-rpmgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-front-rpmgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-rpm" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-front-rpmdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-front-rpmdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Front RPM</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-frontRPMData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rl-rpmgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-rl-rpmgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-rl-rpm" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rl-rpmdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-rl-rpmdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Rear Left RPM</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-rlRPMData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rr-rpmgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-rr-rpmgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-rr-rpm" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rr-rpmdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-rr-rpmdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Rear Right RPM</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-rrRPMData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="tab-pane fade" id="custom-tabs-torque" role="tabpanel"
+                        aria-labelledby="custom-tabs-torque-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-front-torquegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-front-torquegraph" role="tab"
+                                  aria-controls="custom-tabs-front-torquegraph" aria-selected="true">Front Torque
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-front-torquedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-front-torquedata" role="tab"
+                                  aria-controls="custom-tabs-front-torquedata" aria-selected="false">Front Torque
+                                  Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rl-torquegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-rl-torquegraph" role="tab"
+                                  aria-controls="custom-tabs-rl-torquegraph" aria-selected="false">Rear Left Torque
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rl-torquedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-rl-torquedata" role="tab" aria-controls="custom-tabs-rl-torquedata"
+                                  aria-selected="false">Rear Left Torque Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rr-torquegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-rr-torquegraph" role="tab"
+                                  aria-controls="custom-tabs-rr-torquegraph" aria-selected="false">Rear Right Torque
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-rr-torquedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-rr-torquedata" role="tab" aria-controls="custom-tabs-rr-torquedata"
+                                  aria-selected="false">Rear Right Torque Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-global-torquegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-global-torquegraph" role="tab"
+                                  aria-controls="custom-tabs-global-torquegraph" aria-selected="false">Global Torque
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-global-torquedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-global-torquedata" role="tab"
+                                  aria-controls="custom-tabs-global-torquedata" aria-selected="false">Global Torque
+                                  Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-front-torquegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-front-torquegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-torque" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-front-torquedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-front-torquedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Front Torque</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-frontTorqueData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rl-torquegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-rl-torquegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-rl-torque" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rl-torquedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-rl-torquedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Rear Left Torque</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-rlTorqueData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rr-torquegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-rr-torquegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-rr-torque" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-rr-torquedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-rr-torquedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Rear Right Torque</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-rlTorqueData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-global-torquegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-global-torquegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-global-torque" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-global-torquedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-global-torquedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Global Torque</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-globalTorqueData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+
+
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+
+                      <div class="tab-pane fade" id="custom-tabs-speed" role="tabpanel"
+                        aria-labelledby="custom-tabs-speed-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-speedgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-speedgraph" role="tab" aria-controls="custom-tabs-speedgraph"
+                                  aria-selected="true">Speed Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-speeddata-tab" data-toggle="pill"
+                                  href="#custom-tabs-speeddata" role="tab" aria-controls="custom-tabs-speeddata"
+                                  aria-selected="false">Speed Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-speedgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-speedgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-speed" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-speeddata" role="tabpanel"
+                                aria-labelledby="custom-tabs-speeddata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Speed</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-speedData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-pedal" role="tabpanel"
+                        aria-labelledby="custom-tabs-pedal-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-pedalgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-pedalgraph" role="tab" aria-controls="custom-tabs-pedalgraph"
+                                  aria-selected="true">Pedal Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-pedaldata-tab" data-toggle="pill"
+                                  href="#custom-tabs-pedaldata" role="tab" aria-controls="custom-tabs-pedaldata"
+                                  aria-selected="false">Pedal Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-pedalgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-pedalgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-pedal" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-pedaldata" role="tabpanel"
+                                aria-labelledby="custom-tabs-pedaldata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Pedal</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-pedalData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-acc" role="tabpanel"
+                        aria-labelledby="custom-tabs-acc-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-accgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-accgraph" role="tab" aria-controls="custom-tabs-accgraph"
+                                  aria-selected="true">Acceleration Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-accdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-accdata" role="tab" aria-controls="custom-tabs-accdata"
+                                  aria-selected="false">Acceleration Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-accgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-accgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-acc" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-accdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-accdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Acceleration</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-accData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-ess-basic" role="tabpanel"
+                        aria-labelledby="custom-tabs-ess-basic-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-essfeatureenablegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-essfeatureenablegraph" role="tab"
+                                  aria-controls="custom-tabs-essfeatureenablegraph" aria-selected="true">Feature Enable
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-essfeatureenabledata-tab" data-toggle="pill"
+                                  href="#custom-tabs-essfeatureenabledata" role="tab"
+                                  aria-controls="custom-tabs-essfeatureenabledata" aria-selected="false">Feature Enable
+                                  Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-essvolumegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-essvolumegraph" role="tab"
+                                  aria-controls="custom-tabs-essvolumegraph" aria-selected="false">ESS Volume Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-essvolumedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-essvolumedata" role="tab" aria-controls="custom-tabs-essvolumedata"
+                                  aria-selected="false">ESS Volume Data</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-essswitchgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-essswitchgraph" role="tab"
+                                  aria-controls="custom-tabs-essswitchgraph" aria-selected="false">ESS Sound Switch
+                                  Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-essswitchdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-essswitchdata" role="tab" aria-controls="custom-tabs-essswitchdata"
+                                  aria-selected="false">ESS Sound Switch Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-essfeatureenablegraph"
+                                role="tabpanel" aria-labelledby="custom-tabs-essfeatureenablegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-essfeatureenable" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-essfeatureenabledata" role="tabpanel"
+                                aria-labelledby="custom-tabs-essfeatureenabledata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>ESS Feature Enable</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-essfeatureenableData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-essvolumegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-essvolumegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-essvolume" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-essvolumedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-essvolumedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>ESS Volume</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-essvolumeData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+
+                              <div class="tab-pane fade" id="custom-tabs-essswitchgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-essswitchgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-essswitch" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-essswitchdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-essswitchdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>ESS Sound Switch</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-essswitchData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-theme" role="tabpanel"
+                        aria-labelledby="custom-tabs-theme-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-themegraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-themegraph" role="tab" aria-controls="custom-tabs-themegraph"
+                                  aria-selected="true">Theme Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-themedata-tab" data-toggle="pill"
+                                  href="#custom-tabs-themedata" role="tab" aria-controls="custom-tabs-themedata"
+                                  aria-selected="false">Theme Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-themegraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-themegraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-theme" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-themedata" role="tabpanel"
+                                aria-labelledby="custom-tabs-themedata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Theme</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-themeData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-boost" role="tabpanel"
+                        aria-labelledby="custom-tabs-boost-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-boostgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-boostgraph" role="tab" aria-controls="custom-tabs-boostgraph"
+                                  aria-selected="true">Boost Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-boostdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-boostdata" role="tab" aria-controls="custom-tabs-boostdata"
+                                  aria-selected="false">Boost Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-boostgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-boostgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-boost" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-boostdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-boostdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Boost Data</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-boostData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="tab-pane fade" id="custom-tabs-lc" role="tabpanel"
+                        aria-labelledby="custom-tabs-lc-tab">
+                        <div class="card card-primary card-outline ">
+                          <div class="card-header p-0 pt-1">
+                            <ul class="nav nav-tabs" id="custom-tabs-one-tab" role="tablist">
+                              <li class="nav-item">
+                                <a class="nav-link active" id="custom-tabs-lcgraph-tab" data-toggle="pill"
+                                  href="#custom-tabs-lcgraph" role="tab" aria-controls="custom-tabs-lcgraph"
+                                  aria-selected="true">Launch Control Graph</a>
+                              </li>
+                              <li class="nav-item">
+                                <a class="nav-link" id="custom-tabs-lcdata-tab" data-toggle="pill"
+                                  href="#custom-tabs-lcdata" role="tab" aria-controls="custom-tabs-lcata"
+                                  aria-selected="false">Launch Control Data</a>
+                              </li>
+                            </ul>
+                          </div>
+                          <div class="card-body">
+                            <div class="tab-content" id="custom-tabs-one-tabContent">
+                              <div class="tab-pane fade active show" id="custom-tabs-lcgraph" role="tabpanel"
+                                aria-labelledby="custom-tabs-lcgraph-tab">
+                                <div class="card-body">
+                                  <canvas id="line-chart-lc" style="width:100%;"></canvas>
+                                </div>
+                              </div>
+                              <div class="tab-pane fade" id="custom-tabs-lcdata" role="tabpanel"
+                                aria-labelledby="custom-tabs-lcdata-tab">
+                                <div class="card-body">
+                                  <table class="table table-head-fixed text-nowrap col-lg-6 dataTable"
+                                    style="width:50%">
+                                    <thead>
+                                      <tr>
+                                        <th>Timestamp</th>
+                                        <th>Launch Control Data</th>
+                                      </tr>
+                                    </thead>
+                                    <tbody class="tbody-lcData">
+
+                                    </tbody>
+                                  </table>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                    </div>
+                  </div>
+                  <!-- /.card -->
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <footer class="main-footer">
+    <strong>Copyright © 2025-2026 WatchLogTool</strong>
+    <div class="float-right d-none d-sm-inline-block">
+      <b>Version</b> 1.0.0
+    </div>
+  </footer>
+
+  <!-- jQuery -->
+  <script src="js/jquery.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
+    integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r"
+    crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
+    integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy"
+    crossorigin="anonymous"></script>
+  <script src="js/bootstrap.bundle.min.js"></script>
+  <!-- bs-custom-file-input -->
+  <script src="js/bs-custom-file-input.min.js"></script>
+  <script src="https://adminlte.io/themes/v3/dist/js/adminlte.min.js?v=3.2.0"></script>
+  <script src="js/sweetalert2.min.js"></script>
+  <script src="js/xlsx.full.min.js"></script>
+  <script src="js/adminlte.js"></script>
+  <script src="js/select2.full.min.js"></script>
+  <script src="js/Chart.js"></script>
+  <script src="js/jquery.dataTables.min.js"></script>
+  <script src="js/dataTables.bootstrap4.min.js"></script>
+  <script src="js/dataTables.responsive.min.js"></script>
+  <script src="js/responsive.bootstrap4.min.js"></script>
+  <script src="js/dataTables.buttons.min.js"></script>
+  <script src="js/buttons.bootstrap4.min.js"></script>
+  <script src="js/buttons.html5.min.js"></script>
+  <script src="js/buttons.print.min.js"></script>
+  <script src="js/buttons.colVis.min.js"></script>
+  <script src="js/Analyze.js"></script>
+
+</body>
+
+</html>

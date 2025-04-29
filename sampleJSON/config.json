@@ -1,0 +1,152 @@
+{
+    "IPMessages": {
+        "error": "IpmOpError",
+        "dspIPMerror": "DspErrorReport",
+        "IPM201": "AudioSettingsSet",
+        "customIPM1": "UserdefFromMcu1",
+        "customIPM2": "UserdefFromMcu2",
+        "customIPM3": "UserdefFromMcu3",
+        "customIPM4": "UserdefFromMcu4",
+        "IPMOPSETREQ": "IpmOpSetRequest",
+        "IPMOPCOM": "IpmOpCommand",
+        "IPMOPCOMREQ": "IpmOpCommandRequest",
+        "Gati400": "GatixtpTransport",
+        "IPMOPRESP": "IpmOpResponse"
+    },
+    "ess": {
+        "ESSenable": "FeatureEnable",
+        "ESSVolume": "F0 06",
+        "ESSBoost": "F8 0E",
+        "ESSFrontRPM": "F0 20",
+        "ESSRELRPM": "F0 21",
+        "ESSRERRPM": "F0 22",
+        "ESSFrontTorque": "F0 23",
+        "ESSRELTorque": "F0 24",
+        "ESSRERTorque": "F0 25",
+        "ESSGlobalTorque": "F0 14",
+        "ESSPedal": "F0 50",
+        "ESSLgAcc": "F0 09",
+        "ESSSpeed": "00 11",
+        "ESSLauncCtrl": "F0 0B"
+    },
+    "channel_name": {
+        "ch1": "FCM",
+        "ch2": "FRM",
+        "ch3": "FLW",
+        "ch4": "FRW",
+        "ch5": "FLM",
+        "ch6": "BRWT",
+        "ch7": "SUB",
+        "ch8": "BLWT",
+        "ch9": "",
+        "ch10": "",
+        "ch11": "",
+        "ch12": "",
+        "ch13": "",
+        "ch14": "",
+        "ch15": "",
+        "ch16": ""
+    },
+    "speakerfailure": {
+        "success": "00",
+        "failed": "01"
+    },
+    "EQ_name": {
+        "EQ1": "Flat EQ",
+        "EQ2": "Test EQ",
+        "EQ3": "Vehicle EQ",
+        "EQ4": "Sound Mode A",
+        "EQ5": "Sound Mode B",
+        "EQ6": "Sound Mode C",
+        "EQ7": "Sound Mode D",
+        "EQ8": "Sound Mode E",
+        "EQ9": "Media",
+        "EQ10": "FM",
+        "EQ11": "AM",
+        "EQ12": "DAB",
+        "EQ13": "LHD",
+        "EQ14": "RHD",
+        "EQ15": "",
+        "EQ16": ""
+    },
+    "EQ_id": {
+        "EQ1": "01",
+        "EQ2": "02",
+        "EQ3": "03",
+        "EQ4": "04",
+        "EQ5": "05",
+        "EQ6": "06",
+        "EQ7": "07",
+        "EQ8": "08",
+        "EQ9": "09",
+        "EQ10": "0A",
+        "EQ11": "0B",
+        "EQ12": "0C",
+        "EQ13": "0D",
+        "EQ14": "0E",
+        "EQ15": "",
+        "EQ16": ""
+    },
+    "ESS_EQ_id": {
+        "EQ1": "0F",
+        "EQ2": "10",
+        "EQ3": "",
+        "EQ4": "",
+        "EQ5": ""
+    },
+    "ESS_EQ_name": {
+        "EQ1": "Alpine",
+        "EQ2": "Alternative",
+        "EQ3": "",
+        "EQ4": "",
+        "EQ5": ""
+    },
+    "ESS_Volume_names": {
+        "name1": "OFF",
+        "name2": "LOW",
+        "name3": "HIGH"
+    },
+    "Boost_status": {
+        "status1": "Activated",
+        "status2": "Dectivated"
+    },
+    "ESS_status": {
+        "status1": "ESS OFF",
+        "status2": "ESS ON"
+    },
+    "ESS_theme_names": {
+        "name1": "Theme A",
+        "name2": "Theme C",
+        "name3": "Theme E"
+    },
+    "Launch_control": {
+        "status1": "Unavailable",
+        "status2": "Not Active",
+        "status3": "LC Ready",
+        "status4": "LC take off"
+    },
+    "sinkid_name": {
+        "sinkid1": "Main audio",
+        "sinkid2": "Stream mix 1",
+        "sinkid3": "Stream mix 2",
+        "sinkid4": "Stream mix 3",
+        "sinkid5": "Main audio 2"
+    },
+    "sinkid": {
+        "sinkid1": "01",
+        "sinkid2": "02",
+        "sinkid3": "03",
+        "sinkid4": "04",
+        "sinkid5": "05"
+    },
+    "variant_id": {
+        "id0": "00",
+        "id1": "01",
+        "id2": ""
+    },
+    "variant_name": {
+        "name0": "ECHO",
+        "name1": "DZ110",
+        "name2": ""
+    }
+}
