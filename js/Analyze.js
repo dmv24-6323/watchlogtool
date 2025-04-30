@@ -747,32 +747,33 @@ function fileReader(oEvent) {
             }
             if(mask_full & 128 == 128){
                 //Mute changed.
-                volmute_count++;
-                //volmute.push(audioSettings[i][2], data[13]);
-                tbody_volmute += '<tr>';
-                tbody_volmute += '<td>'+ audioSettings[i][2] +'</td>';
-                if(data[0] == json_data.sinkid.sinkid1/*1*/){
-                    tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid1/*Main audio*/ + '</td>';
-                }
-                else if(data[0] == json_data.sinkid.sinkid2/*2*/){
-                    tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid2/*Stream mix 1*/ + '</td>';
-                }
-                else if(data[0] == json_data.sinkid.sinkid3/*3*/){
-                    tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid3/*Stream mix 2*/ + '</td>';
-                }
-                else if(data[0] == json_data.sinkid.sinkid4/*4*/){
-                    tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid4/*Stream mix 3*/ + '</td>';
-                }
-                else if(data[0] == json_data.sinkid.sinkid5/*5*/){
-                    tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid5/*Main audio 2*/ + '</td>';
-                }
-
                 if(parseInt(data[13],16) == 1){
+                    volmute_count++;
+                    //volmute.push(audioSettings[i][2], data[13]);
+                    tbody_volmute += '<tr>';
+                    tbody_volmute += '<td>'+ audioSettings[i][2] +'</td>';
+                    if(data[0] == json_data.sinkid.sinkid1/*1*/){
+                        tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid1/*Main audio*/ + '</td>';
+                    }
+                    else if(data[0] == json_data.sinkid.sinkid2/*2*/){
+                        tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid2/*Stream mix 1*/ + '</td>';
+                    }
+                    else if(data[0] == json_data.sinkid.sinkid3/*3*/){
+                        tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid3/*Stream mix 2*/ + '</td>';
+                    }
+                    else if(data[0] == json_data.sinkid.sinkid4/*4*/){
+                        tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid4/*Stream mix 3*/ + '</td>';
+                    }
+                    else if(data[0] == json_data.sinkid.sinkid5/*5*/){
+                        tbody_volmute += '<td>'+ json_data.sinkid_name.sinkid5/*Main audio 2*/ + '</td>';
+                    }
+
                     tbody_volmute += '<td>Mute</td>';
                 }
-                else if(parseInt(data[13],16) == 0){
+                //Commented to show only Mute state. If its unmute, will print volume as per above code.
+                /*else if(parseInt(data[13],16) == 0){
                     tbody_volmute += '<td>Unmute</td>';
-                }
+                }*/
                 
                 tbody_volmute += '</tr>';
             }
